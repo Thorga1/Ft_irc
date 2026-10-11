@@ -266,8 +266,6 @@ void Server::stop()
 
 	for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it)
 		delete it->second;
-	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
-		it->second.~Channel();
 	_clients.clear();
 	_channels.clear();
 	_fds.clear();
@@ -279,7 +277,7 @@ void Server::removeClientFromChannels(const std::string &nickname)
 {
 	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end();)
 	{
-		it->second.removeUser(nickname, 1);
+		it->second.removeUser(nickname);
 		if (it->second.getUserCount() == 0)
 		{
 			std::map<std::string, Channel>::iterator toErase = it;
